@@ -36,13 +36,13 @@ const orcidId = "0009-0009-9008-2508";
             ? `https://doi.org/${doiId["external-id-value"]}`
             : null;
 
-          const bgColor = index % 2 === 0 ? "bg-white" : "bg-quat";
+          const bgColor = index % 2 === 0 ? "bg-white" : "bg-quat/20";
 
           return `
-          <a ${url ? `href="${url}" target="_blank"` : ""} class="group block no-underline">
-            <div class="pl-8 pr-8 p-4 ${bgColor}/20 w-full border-1 border-quat/20">
+          <a ${url ? `href="${url}" target="_blank"` : ""} class="group block !no-underline">
+            <div class="pl-8 pr-8 p-4 ${bgColor} w-full border-1 border-quat/40">
               <div class="flex flex-col">
-                <div class="text-base text-main group-hover:text-blue-500 transition-colors duration-150 mb-4 leading-relaxed">
+                <div class="text-base text-main group-hover:text-ref mb-4 leading-relaxed transform transition-all duration-300 group-hover:translate-x-1">
                   ${title}
                 </div>
                 <div class="text-xs text-sec flex gap-4">

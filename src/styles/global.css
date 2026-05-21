@@ -6,6 +6,7 @@
     --color-sec: #86868b;
     --color-ter: #d2d2d7;
     --color-quat: #e8e8ed;
+    --color-ref: #00007f;
 }
 
 @layer components {

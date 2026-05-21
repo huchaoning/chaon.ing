@@ -74,10 +74,13 @@ if (rawEdit) {
       class="prose text-main prose-lg max-w-none
       prose-headings:font-bold prose-headings:tracking-tight
       prose-blockquote:border-l-quat prose-blockquote:italic prose-blockquote:text-sec
-      prose-strong:text-main prose-li:marker:text-main
+      prose-strong:text-inherit prose-li:marker:text-main
       prose-img:rounded-md prose-img:mx-auto prose-img:block prose-img:w-full md:prose-img:w-1/2 prose-img:h-auto
       prose-figcaption:text-center prose-figcaption:text-sm prose-figcaption:text-sec prose-figcaption:max-w-full md:prose-figcaption:max-w-sm prose-figcaption:mx-auto
-      prose-pre:rounded-md prose-pre:overflow-hidden"
+      prose-pre:rounded-md prose-pre:overflow-hidden
+
+      prose-a:no-underline prose-a:text-ref
+      prose-a:hover:underline"
     >
       <slot />
     </div>
