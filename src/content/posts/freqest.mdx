@@ -14,6 +14,7 @@ Our method offers a promising direction for tracking weak signals in areas such 
 ---
 
 import fig1 from "./freqest.assets/freqest.webp";
+import fig2 from "./freqest.assets/metrology.svg";
 
 
 ## Introduction
@@ -27,11 +28,33 @@ Our work shows the possibility of overcoming this limitation.
 By utilizing two elaborately designed modes, we alleviate this inherent contradiction of direct imaging, allowing deterministic micro-motion parameter estimation to achieve near-optimal precision even under extreme noise conditions.
 
 <figure>
-  <img 
-    src={fig1.src} 
-  />
+  <img src={fig1.src} />
   <figcaption>
-    Artistic cover illustration for SPADE-based micro-motion detection.
+    Artistic illustration for SPADE-based micro-motion detection.
+  </figcaption>
+</figure>
+
+## Quantum parameter estimation
+
+The theory of [quantum parameter estimation](https://en.wikipedia.org/wiki/Quantum_metrology) was first started by [C. W. Helstrom](https://en.wikipedia.org/wiki/Carl_W._Helstrom). 
+Just like classical estimation theory has the [Cram&eacute;r-Rao bound](https://en.wikipedia.org/wiki/Cram%C3%A9r%E2%80%93Rao_bound) and classical [Fisher information](https://en.wikipedia.org/wiki/Fisher_information), Helstrom created their quantum versions: the [quantum Cram&eacute;r-Rao bound](https://en.wikipedia.org/wiki/Quantum_Cram%C3%A9r%E2%80%93Rao_bound) and [quantum Fisher information](https://en.wikipedia.org/wiki/Quantum_Fisher_information). 
+Later in 1994, the [S. L. Braunstein](https://en.wikipedia.org/wiki/Samuel_L._Braunstein) and [C. M. Caves](https://en.wikipedia.org/wiki/Carlton_M._Caves) proved that quantum Fisher information is simply the maximum possible classical Fisher information you can get across all possible measurement methods.
+Together, these ideas build the basic framework of quantum estimation.
+
+Here is how they differ: Quantum Fisher information lives on the quantum state itself. 
+It tells you the absolute maximum amount of parameter information hidden inside that state. 
+On the other hand, classical Fisher information is based on [probability distributions](https://en.wikipedia.org/wiki/Probability_distribution). 
+It sets the ultimate limit on how small your estimation error can get, no matter what specific [estimator](https://en.wikipedia.org/wiki/Estimator) you choose. 
+
+As quantum mechanics developed, [quantum measurement](https://en.wikipedia.org/wiki/Quantum_measurement) became a core concept in precision tracking. 
+According to [Born rule](https://en.wikipedia.org/wiki/Born_rule), measurement outcomes always show up as probabilities. 
+Because of this, we can think of classical Fisher information as being tied directly to your chosen measurement setup. 
+Once you fix your quantum state and your measurement scheme, the classical Fisher information is locked in. 
+
+<figure>
+  <img src={fig2.src} class="!w-2/3" />
+  <figcaption>
+    Quantum detection and estimation.
   </figcaption>
 </figure>
 
