@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeMathjax from 'rehype-mathjax';
+import rehypeExternalLinks from 'rehype-external-links';
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import pagefind from 'astro-pagefind';
@@ -20,8 +21,11 @@ export default defineConfig({
                 loader: {
                     load: ['[tex]/physics']
                 }
-            },
-            ]
+            }],
+
+            [rehypeExternalLinks, {
+                target: '_blank', rel: ['noopener', 'noreferrer'] 
+            }]
         ]
     },
 
