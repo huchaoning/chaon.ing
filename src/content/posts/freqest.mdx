@@ -3,7 +3,7 @@ title: We leverage SPADE to exhaust micro-motion information
 
 description: A noise-resilient way to detect micro-motions without high-resolution imaging
 
-date: 2026-05-21
+date: 2026-05-22
 
 abstract: "We have demonstrated a noise-resilient way to detect extremely small motions of a single point of light without relying on high-resolution images. 
 We adopted the idea of spatial-mode demultiplexing (SPADE), proposed by Tsang et al., and used it to concentrate the motion-related information while suppressing background noise. 
@@ -15,11 +15,12 @@ Our method offers a promising direction for tracking weak signals in areas such 
 
 import fig1 from "./freqest.assets/freqest.webp";
 import fig2 from "./freqest.assets/metrology.svg";
+import fig3 from "./freqest.assets/DIvsSPADE.svg";
 
 
 ## Introduction
 
-Classical direct camera imaging is theoretically optimal in a noiseless universe; it reaches the quantum limit--imposed by the quantum Cram&eacute;r-Rao bound--for tracking micro-motions.
+In the context of single-particle tracking, classical direct imaging is theoretically optimal in a noiseless universe; it reaches the quantum limit--imposed by the [quantum Cram&eacute;r-Rao bound](https://en.wikipedia.org/wiki/Quantum_Cram%C3%A9r%E2%80%93Rao_bound)--for tracking micro-motions.
 
 However, real-world detection is inevitably plagued by noise.
 In practical scenarios, traditional imaging faces a critical limitation: distributing photons across many pixels severely reduces the photon counts per pixel, making the measurement highly sensitive to background noise.
@@ -36,20 +37,20 @@ By utilizing two elaborately designed modes, we alleviate this inherent contradi
 
 ## Quantum parameter estimation
 
-The theory of [quantum parameter estimation](https://en.wikipedia.org/wiki/Quantum_metrology) was first started by [C. W. Helstrom](https://en.wikipedia.org/wiki/Carl_W._Helstrom). 
+The theory of [quantum parameter estimation](https://en.wikipedia.org/wiki/Quantum_metrology) was first pioneered by [C. W. Helstrom](https://en.wikipedia.org/wiki/Carl_W._Helstrom). 
 Just like classical estimation theory has the [Cram&eacute;r-Rao bound](https://en.wikipedia.org/wiki/Cram%C3%A9r%E2%80%93Rao_bound) and classical [Fisher information](https://en.wikipedia.org/wiki/Fisher_information), Helstrom created their quantum versions: the [quantum Cram&eacute;r-Rao bound](https://en.wikipedia.org/wiki/Quantum_Cram%C3%A9r%E2%80%93Rao_bound) and [quantum Fisher information](https://en.wikipedia.org/wiki/Quantum_Fisher_information). 
-Later in 1994, the [S. L. Braunstein](https://en.wikipedia.org/wiki/Samuel_L._Braunstein) and [C. M. Caves](https://en.wikipedia.org/wiki/Carlton_M._Caves) proved that quantum Fisher information is simply the maximum possible classical Fisher information you can get across all possible measurement methods.
-Together, these ideas build the basic framework of quantum estimation.
+Later in 1994, [S. L. Braunstein](https://en.wikipedia.org/wiki/Samuel_L._Braunstein) and [C. M. Caves](https://en.wikipedia.org/wiki/Carlton_M._Caves) proved that quantum Fisher information is the maximum possible classical Fisher information you can get across all possible measurement methods.
+Together, these ideas build the basic framework of quantum parameter estimation.
 
-Here is how they differ: Quantum Fisher information lives on the quantum state itself. 
+Quantum Fisher information lives on the quantum state itself. 
 It tells you the absolute maximum amount of parameter information hidden inside that state. 
 On the other hand, classical Fisher information is based on [probability distributions](https://en.wikipedia.org/wiki/Probability_distribution). 
 It sets the ultimate limit on how small your estimation error can get, no matter what specific [estimator](https://en.wikipedia.org/wiki/Estimator) you choose. 
 
-As quantum mechanics developed, [quantum measurement](https://en.wikipedia.org/wiki/Quantum_measurement) became a core concept in precision tracking. 
-According to [Born rule](https://en.wikipedia.org/wiki/Born_rule), measurement outcomes always show up as probabilities. 
-Because of this, we can think of classical Fisher information as being tied directly to your chosen measurement setup. 
-Once you fix your quantum state and your measurement scheme, the classical Fisher information is locked in. 
+As quantum mechanics developed, [quantum measurement](https://en.wikipedia.org/wiki/Quantum_measurement) became a core concept in quantum metrology. 
+According to the [Born rule](https://en.wikipedia.org/wiki/Born_rule), measurement outcomes always show up as probabilities. 
+Hence, we can think of classical Fisher information as being defined directly by your chosen measurement setup. 
+Once the quantum state is fixed and your measurement scheme is chosen, the classical Fisher information is determined, which can then be extracted by choosing an appropriate estimator. 
 
 <figure>
   <img src={fig2.src} class="md:w-2/3" />
@@ -59,6 +60,22 @@ Once you fix your quantum state and your measurement scheme, the classical Fishe
 </figure>
 
 ## Spatial-mode demultiplexing
+
+When it comes to resolving two incoherent point sources, traditional direct imaging has long been constrained by the [Rayleigh limit](https://en.wikipedia.org/wiki/Angular_resolution#The_Rayleigh_criterion). 
+However, a breakthrough [[*Phys. Rev. X* **6**, 031033 (2016)]](https://doi.org/10.1103/PhysRevX.6.031033) by Tsang *et al.* revealed that this limit is far from an absolute physical barrier. 
+By demonstrating that the quantum Fisher information remains constant even as the source separation vanishes, they proved that the Rayleigh limit is not a fundamental limit of physics. 
+This insight led them to propose spatial-mode demultiplexing (SPADE) as a measurement scheme.
+
+<figure>
+  <img src={fig3.src} class="md:w-2/3" />
+  <figcaption>
+    Schematic of direct imaging (DI) and SPADE.
+  </figcaption>
+</figure>
+
+Direct imaging utilizes coordinate basis vectors as its measurement basis, whereas SPADE employs a set of orthogonal, non-trivial spatial modes.
+Although the coordinate basis is inherently continuous, it is depicted in a discrete form within upper schematic to account for pixelation effects.
+
 
 ## Result
 
