@@ -1,9 +1,8 @@
 ---
 title: We leverage SPADE to exhaust micro-motion information
-
 description: A noise-resilient way to detect micro-motions without high-resolution imaging
-
-date: 2026-05-22
+date: 2026-5-22
+edit: 2026-5-25
 
 abstract: "We have demonstrated a noise-resilient way to detect extremely small motions of a single point of light without relying on high-resolution images. 
 We adopted the idea of spatial-mode demultiplexing (SPADE), proposed by Tsang et al., and used it to concentrate the motion-related information while suppressing background noise. 
@@ -66,10 +65,8 @@ However, a breakthrough [[*Phys. Rev. X* **6**, 031033 (2016)]](https://doi.org/
 By demonstrating that the quantum Fisher information remains constant even as the source separation vanishes, they proved that the Rayleigh limit is not a fundamental limit of physics. 
 This insight led them to propose spatial-mode demultiplexing (SPADE) as a measurement scheme.
 
-From the perspective of quantum measurement, direct imaging projects the incoming light field onto a continuous coordinate basis (i.e., spatial positions).
-In contrast, SPADE expands the field into a discrete set of orthogonal spatial modes $\qty{\ket{\phi_q}}$, estimating the unknown parameters by measuring the photon detection probabilities across these modes.
-
-From the perspective of quantum measurement, direct imaging fundamentally relies on the coordinate basis—conceptually continuous, though practically discretized by camera pixelation. Conversely, SPADE optical complexes project the field onto a discrete set of non-trivial, orthogonal spatial modes $\qty{\ket{\phi_q}}$, extracting parameter estimates from the photon detection probabilities across these modes.
+From the perspective of quantum measurement, direct imaging projects the incoming light field onto a coordinate basis, i.e., spatial positions.
+In contrast, SPADE expands the field into a set of orthogonal spatial modes $\qty{\ket{\phi_q}}$, estimating the unknown parameters by measuring the photon detection probabilities across these modes.
 
 <figure>
   <img src={fig3.src} class="md:w-2/3" />
@@ -81,3 +78,10 @@ From the perspective of quantum measurement, direct imaging fundamentally relies
 
 ## Our work
 
+SPADE has achieved remarkable success in the field of incoherent imaging by efficiently extracting spatial information. 
+Naturally, this raises a question: can SPADE also benefit single-particle localization and tracking? 
+
+To explore this, our group's prior research [[*Opt. Express* **31**, 19336 (2023)]](https://doi.org/10.1364/OE.486539) proposed a set of superposition modes, termed "plus-minus modes", to estimate the lateral displacement of a single point source, demonstrating the feasibility of SPADE in single-point localization.
+
+In this work [[*Phys. Rev. Lett.* **135**, 243806 (2025)]](https://doi.org/10.1103/szcc-vk9r), we extend this framework from static localization to dynamic tracking. 
+We demonstrate that our plus-minus mode-based SPADE (PM-SPADE) can achieve the ultimate quantum limit even in the presence of heavy background noise, requiring only that the point source does not undergo excessive motion--a condition inherent to micro-motion tracking.
