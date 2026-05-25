@@ -86,17 +86,17 @@ Naturally, this raises a question: can SPADE also benefit single-particle locali
 To explore this, our group's prior research [[*Opt. Express* **31**, 19336 (2023)]](https://doi.org/10.1364/OE.486539) proposed a set of superposition modes, termed "plus-minus modes", to estimate the lateral displacement of a single point source, demonstrating the feasibility of SPADE in single-point localization.
 
 In this work [[*Phys. Rev. Lett.* **135**, 243802 (2025)]](https://doi.org/10.1103/szcc-vk9r), we extend this framework from static localization to dynamic tracking. 
-We demonstrate that our plus-minus mode-based SPADE (PM-SPADE) can achieve the ultimate quantum limit even in the presence of heavy background noise, requiring only that the point source does not undergo excessive motion--a condition inherent to micro-motion tracking.
+We demonstrate that our plus-minus mode-based SPADE (PM-SPADE) can achieve the ultimate quantum limit even in the presence of heavy background noise, requiring only that the point source does not undergo excessive motion—a condition inherent to micro-motion tracking.
 
-We demonstrate that the PM-SPADE outperforms direct imaging in estimating the microoscillation frequency of an optical point source under excess noise, with its advantage becoming more significant as excess noise increases.
+We demonstrate that PM-SPADE outperforms direct imaging in estimating the micro-oscillation frequency of an optical point source under excess noise, with its advantage becoming more significant as the noise increases.
 These advantages suggest that SPADE holds promising potential for applications in fields such as biology and astrophysics.
 
-## More detils
+## More details
 
 Let us consider an optical point source, or an illuminated particle, moving transversely from the optical axis in the object plane, with its motion described by $s(t,\theta)$.
 
 <figure>
-  <img src={fig4.src} class="md:!w-[35%]" />
+  <img src={fig4.src} class="!w-[70%] md:!w-[35%]" />
   <figcaption>
     Illustration of the dynamic single point source.
   </figcaption>
@@ -105,18 +105,18 @@ Let us consider an optical point source, or an illuminated particle, moving tran
 We use quantum parameter estimation theory to evaluate a measurement strategy for estimating the motion vector parameters $\theta$.
 The covariance matrix of any unbiased estimator satisfies $\operatorname{Cov}(\hat\theta) \geq F^{-1} \geq \mathcal{F}^{-1}$, where $F$ and $\mathcal{F}$ are the classical and quantum Fisher information matrices, respectively.
 We assume a Gaussian point-spread function $\qty(2\pi\sigma^{2})^{-1/4}e^{-x^{2}/(4\sigma^{2})}$ with characteristic width $\sigma$.
-Considering the set of sampling time instances $T$, the Fisher information matrices for $ \theta $ satisfy
+Considering the set of sampling time instances $T$, the Fisher information matrices for $\theta$ satisfy
 $$
   \mathcal{F}_{jk} \approx \frac{\nu}{\sigma^2}\frac{1}{1+2b/\nu} \sum_{t\in T} \pdv{s(t,\theta)}{\theta_j} \pdv{s(t, \theta)}{\theta_k} \qand \lim_{s\to 0}F^\text{(PM)} = \mathcal{F},
 $$
 where $\nu$ denotes the average photon number per sample, $b$ is the expected number of noise photons in each detector, and $F^\text{(PM)}$ represents the classical Fisher information matrix of PM-SPADE.
 
-Then we conducted an expermantal research as follows:
+We then verified our theoretical model with the following experimental setup:
 A continuous-wave (CW) Gaussian beam illuminates a digital micromirror device (DMD), imaged by a single-lens unit-magnification system; PM-SPADE is realized via digital holography with a phase-only spatial light modulator (SLM).
 
 <figure>
   <img src={fig5.src} />
   <figcaption>
-    Illustration of the dynamic single point source.
+    Experimental setup for PM-SPADE.
   </figcaption>
 </figure>
