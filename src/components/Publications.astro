@@ -3,8 +3,13 @@ const orcidId = "0009-0009-9008-2508";
 ---
 
 <div class="orcid-wrapper">
-  <div id="orcid-container" class="space-y-4">
-    <p data-pagefind-ignore class="text-ter italic">Syncing publications&hellip;</p>
+  <div id="orcid-container" data-pagefind-ignore class="space-y-4">
+    <p class="text-sec italic">
+      Syncing publications&hellip; If it doesn&rsquo;t work, you can
+      <a href={`https://orcid.org/${orcidId}`} class="text-ref" target="_blank">
+        view on ORCID.
+      </a>
+    </p>
   </div>
 </div>
 
@@ -18,12 +23,13 @@ const orcidId = "0009-0009-9008-2508";
       const data = await res.json();
 
       if (!data.group?.length) {
-        container.innerHTML =
-          '<p data-pagefind-ignore class="text-ter italic">No public works found.</p>';
+        container.innerHTML = `
+          <p class="text-sec italic">No public works found.</p>
+        `;
         return;
       }
 
-      container.innerHTML = data.group
+      const html = data.group
         .map((item, index) => {
           const w = item["work-summary"][0];
           const title = w.title?.title?.value || "Untitled";
@@ -55,8 +61,18 @@ const orcidId = "0009-0009-9008-2508";
         `;
         })
         .join("");
+
+      container.removeAttribute("data-pagefind-ignore");
+      container.innerHTML = html;
     } catch (e) {
-      container.innerHTML = '<p data-pagefind-ignore class="text-ter italic">Sync failed.</p>';
+      container.innerHTML = `
+        <p class="text-sec italic">
+          Sync failed, you may 
+          <a href="https://orcid.org/${orcidId}" class="text-ref" target="_blank">
+            refer to ORCID.
+          </a>
+        </p>
+      `;
     }
   })();
 </script>
