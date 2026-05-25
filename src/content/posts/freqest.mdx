@@ -13,8 +13,10 @@ Our method offers a promising direction for tracking weak signals in areas such 
 ---
 
 import fig1 from "./freqest.assets/freqest.webp";
-import fig2 from "./freqest.assets/metrology.svg";
-import fig3 from "./freqest.assets/DIvsSPADE.svg";
+import fig2 from "./freqest.assets/metrology.webp";
+import fig3 from "./freqest.assets/DIvsSPADE.webp";
+import fig4 from "./freqest.assets/freqest_fig1.webp";
+import fig5 from "./freqest.assets/freqest_fig2.webp";
 
 
 ## Introduction
@@ -52,7 +54,7 @@ Hence, we can think of classical Fisher information as being defined directly by
 Once the quantum state is fixed and your measurement scheme is chosen, the classical Fisher information is determined, which can then be extracted by choosing an appropriate estimator. 
 
 <figure>
-  <img src={fig2.src} class="md:w-2/3" />
+  <img src={fig2.src}/>
   <figcaption>
     Quantum detection and estimation.
   </figcaption>
@@ -69,7 +71,7 @@ From the perspective of quantum measurement, direct imaging projects the incomin
 In contrast, SPADE expands the field into a set of orthogonal spatial modes $\qty{\ket{\phi_q}}$, estimating the unknown parameters by measuring the photon detection probabilities across these modes.
 
 <figure>
-  <img src={fig3.src} class="md:w-2/3" />
+  <img src={fig3.src} />
   <figcaption>
     Schematic of direct imaging (DI) and SPADE.
   </figcaption>
@@ -85,3 +87,36 @@ To explore this, our group's prior research [[*Opt. Express* **31**, 19336 (2023
 
 In this work [[*Phys. Rev. Lett.* **135**, 243802 (2025)]](https://doi.org/10.1103/szcc-vk9r), we extend this framework from static localization to dynamic tracking. 
 We demonstrate that our plus-minus mode-based SPADE (PM-SPADE) can achieve the ultimate quantum limit even in the presence of heavy background noise, requiring only that the point source does not undergo excessive motion--a condition inherent to micro-motion tracking.
+
+We demonstrate that the PM-SPADE outperforms direct imaging in estimating the microoscillation frequency of an optical point source under excess noise, with its advantage becoming more significant as excess noise increases.
+These advantages suggest that SPADE holds promising potential for applications in fields such as biology and astrophysics.
+
+## More detils
+
+Let us consider an optical point source, or an illuminated particle, moving transversely from the optical axis in the object plane, with its motion described by $s(t,\theta)$.
+
+<figure>
+  <img src={fig4.src} class="md:!w-[35%]" />
+  <figcaption>
+    Illustration of the dynamic single point source.
+  </figcaption>
+</figure>
+
+We use quantum parameter estimation theory to evaluate a measurement strategy for estimating the motion vector parameters $\theta$.
+The covariance matrix of any unbiased estimator satisfies $\operatorname{Cov}(\hat\theta) \geq F^{-1} \geq \mathcal{F}^{-1}$, where $F$ and $\mathcal{F}$ are the classical and quantum Fisher information matrices, respectively.
+We assume a Gaussian point-spread function $\qty(2\pi\sigma^{2})^{-1/4}e^{-x^{2}/(4\sigma^{2})}$ with characteristic width $\sigma$.
+Considering the set of sampling time instances $T$, the Fisher information matrices for $ \theta $ satisfy
+$$
+  \mathcal{F}_{jk} \approx \frac{\nu}{\sigma^2}\frac{1}{1+2b/\nu} \sum_{t\in T} \pdv{s(t,\theta)}{\theta_j} \pdv{s(t, \theta)}{\theta_k} \qand \lim_{s\to 0}F^\text{(PM)} = \mathcal{F},
+$$
+where $\nu$ denotes the average photon number per sample, $b$ is the expected number of noise photons in each detector, and $F^\text{(PM)}$ represents the classical Fisher information matrix of PM-SPADE.
+
+Then we conducted an expermantal research as follows:
+A continuous-wave (CW) Gaussian beam illuminates a digital micromirror device (DMD), imaged by a single-lens unit-magnification system; PM-SPADE is realized via digital holography with a phase-only spatial light modulator (SLM).
+
+<figure>
+  <img src={fig5.src} />
+  <figcaption>
+    Illustration of the dynamic single point source.
+  </figcaption>
+</figure>
