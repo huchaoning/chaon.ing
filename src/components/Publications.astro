@@ -16,6 +16,8 @@ const orcidId = "0009-0009-9008-2508";
 <script is:inline define:vars={{ orcidId }}>
   (async () => {
     const container = document.getElementById("orcid-container");
+    const DOI_BASE = "https://doi.org/";
+
     try {
       const res = await fetch(`https://pub.orcid.org/v3.0/${orcidId}/works`, {
         headers: { Accept: "application/json" },
@@ -23,48 +25,153 @@ const orcidId = "0009-0009-9008-2508";
       const data = await res.json();
 
       if (!data.group?.length) {
-        container.innerHTML = `
-          <p class="text-sec italic">No public works found.</p>
-        `;
+        container.innerHTML = `<p class="text-sec italic">No public works found.</p>`;
         return;
       }
 
-      const html = data.group
-        .map((item, index) => {
-          const w = item["work-summary"][0];
-          const title = w.title?.title?.value || "Untitled";
-          const year = w["publication-date"]?.year?.value || "n.d.";
-          const journal = w["journal-title"]?.value || "";
-          const doiId = w["external-ids"]?.["external-id"]?.find(
-            (i) => i["external-id-type"] === "doi",
-          );
-          const url = doiId
-            ? `https://doi.org/${doiId["external-id-value"]}`
-            : null;
+      const crossrefDoiList = [];
+      const arxivDoiList = [];
 
-          const bgColor = index % 2 === 0 ? "bg-white" : "bg-quat/20";
+      const works = data.group.map((item, index) => {
+        const w = item["work-summary"][0];
+        const title = w.title?.title?.value || "Untitled";
+        const year = w["publication-date"]?.year?.value || "n.d.";
+        const journal = w["journal-title"]?.value || "";
 
-          return `
-          <a ${url ? `href="${url}" target="_blank"` : ""} class="group block !no-underline">
-            <div class="pl-8 pr-8 p-4 ${bgColor} w-full border-1 border-quat/40">
-              <div class="flex flex-col">
-                <div class="text-base text-main group-hover:text-ref mb-4 leading-relaxed transform transition-all duration-300 group-hover:translate-x-1">
-                  ${title}
-                </div>
-                <div class="text-xs text-sec flex gap-4">
-                  <span>${year}</span>
-                  ${journal ? `<span>|</span><span class="italic">${journal}</span>` : ""}
-                </div>
-              </div>
-            </div>
-          </a>
-        `;
-        })
-        .join("");
+        const doiId = w["external-ids"]?.["external-id"]?.find(
+          (i) => i["external-id-type"] === "doi",
+        );
+        const doiValue = doiId
+          ? doiId["external-id-value"].toLowerCase()
+          : null;
+
+        if (doiValue) {
+          doiValue.includes("arxiv")
+            ? arxivDoiList.push(doiValue)
+            : crossrefDoiList.push(doiValue);
+        }
+
+        return {
+          title,
+          year,
+          journal,
+          url: doiValue ? `${DOI_BASE}${doiValue}` : null,
+          bgColor: index % 2 === 0 ? "bg-white" : "bg-quat/20",
+          doiValue,
+          index,
+        };
+      });
 
       container.removeAttribute("data-pagefind-ignore");
-      container.innerHTML = html;
+      container.innerHTML = works
+        .map(
+          (w) => `
+        <a ${w.url ? `href="${w.url}" target="_blank"` : ""} class="group block !no-underline">
+          <div class="pl-8 pr-8 p-4 ${w.bgColor} w-full border-1 border-quat/40">
+            <div class="flex flex-col">
+              <div class="text-base text-main group-hover:text-ref mb-2 leading-relaxed transform transition-all duration-300 group-hover:translate-x-1">
+                ${w.title}
+              </div>
+              <div id="authors-for-${w.index}" class="text-sm text-sec mb-3 line-clamp-2 hidden"></div>
+              <div class="text-xs text-sec flex gap-4">
+                <span>${w.year}</span>
+                ${w.journal ? `<span>|</span><span class="italic">${w.journal}</span>` : ""}
+              </div>
+            </div>
+          </div>
+        </a>
+      `,
+        )
+        .join("");
+
+      const renderedDois = new Set();
+
+      const renderAuthor = (doi, text) => {
+        const w = works.find((item) => item.doiValue === doi);
+        if (w) {
+          const authorEl = document.getElementById(`authors-for-${w.index}`);
+          if (authorEl) {
+            authorEl.textContent = text;
+            authorEl.classList.remove("hidden");
+            renderedDois.add(doi);
+          }
+        }
+      };
+
+      const parseCrossrefAuthors = (authorArray) => {
+        if (!authorArray) return "";
+        return authorArray
+          .map((a) => a.name || `${a.given || ""} ${a.family || ""}`.trim())
+          .filter(Boolean)
+          .join(", ");
+      };
+
+      const chunkArray = (array, size) => {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += size) {
+          chunks.push(array.slice(i, i + size));
+        }
+        return chunks;
+      };
+
+      const crossrefPromises = chunkArray(crossrefDoiList, 30).map((chunk) => {
+        const filterParam = chunk.map((doi) => `doi:${doi}`).join(",");
+        const crossrefUrl = `https://api.crossref.org/works?filter=${encodeURIComponent(filterParam)}&rows=${chunk.length}&select=DOI,author`;
+
+        return fetch(crossrefUrl)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((crossrefData) => {
+            (crossrefData?.message?.items || []).forEach((item) => {
+              const doi = item.DOI.toLowerCase();
+              const authorsText = parseCrossrefAuthors(item.author);
+              if (authorsText) renderAuthor(doi, authorsText);
+            });
+          })
+          .catch((err) => console.error(err));
+      });
+
+      chunkArray(arxivDoiList, 30).forEach((chunk) => {
+        const dataCiteUrl = `https://api.datacite.org/dois?ids=${chunk.join(",")}&page[size]=${chunk.length}`;
+
+        fetch(dataCiteUrl)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((dataciteData) => {
+            (dataciteData?.data || []).forEach((item) => {
+              const doi = item.id.toLowerCase();
+              const creators = item.attributes?.creators || [];
+              if (creators.length > 0) {
+                const authorsText = creators
+                  .map(
+                    (c) =>
+                      c.name ||
+                      `${c.givenName || ""} ${c.familyName || ""}`.trim(),
+                  )
+                  .filter(Boolean)
+                  .join(", ");
+                renderAuthor(doi, authorsText);
+              }
+            });
+          })
+          .catch((err) => console.error(err));
+      });
+
+      Promise.all(crossrefPromises).then(() => {
+        crossrefDoiList.forEach((doi) => {
+          if (!renderedDois.has(doi)) {
+            fetch(`${DOI_BASE}${doi}`, {
+              headers: { Accept: "application/vnd.crossref.api+json" },
+            })
+              .then((r) => (r.ok ? r.json() : null))
+              .then((singleData) => {
+                const authorsText = parseCrossrefAuthors(singleData?.author);
+                if (authorsText) renderAuthor(doi, authorsText);
+              })
+              .catch((err) => console.error(err));
+          }
+        });
+      });
     } catch (e) {
+      console.error(e);
       container.innerHTML = `
         <p class="text-sec italic">
           Sync failed, you may 
