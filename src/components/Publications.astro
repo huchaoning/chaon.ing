@@ -63,26 +63,23 @@ const orcidId = "0009-0009-9008-2508";
       });
 
       container.removeAttribute("data-pagefind-ignore");
-      container.innerHTML = works
-        .map(
+      container.innerHTML = works.map(
           (w) => `
-        <a ${w.url ? `href="${w.url}" target="_blank"` : ""} class="group block !no-underline">
-          <div class="pl-8 pr-8 p-4 ${w.bgColor} w-full border-1 border-quat/40">
-            <div class="flex flex-col">
-              <div class="text-base text-main group-hover:text-ref mb-2 leading-relaxed transform transition-all duration-300 group-hover:translate-x-1">
-                ${w.title}
+            <a ${w.url ? `href="${w.url}" target="_blank"` : ""} class="group block !no-underline">
+              <div class="pl-8 pr-8 p-4 ${w.bgColor} w-full border-1 border-quat/40 transition-all duration-300 ease-out hover:border hover:-translate-y-0.5 hover:shadow-md rounded-xl">
+                <div class="flex flex-col">
+                  <div class="text-base text-main mb-2 leading-relaxed">
+                    ${w.title}
+                  </div>
+                  <div id="authors-for-${w.index}" class="text-sm text-sec mb-3 line-clamp-2 hidden"></div>
+                  <div class="text-xs text-sec flex gap-4">
+                    <span>${w.year}</span>
+                    ${w.journal ? `<span>|</span><span class="italic">${w.journal}</span>` : ""}
+                  </div>
+                </div>
               </div>
-              <div id="authors-for-${w.index}" class="text-sm text-sec mb-3 line-clamp-2 hidden"></div>
-              <div class="text-xs text-sec flex gap-4">
-                <span>${w.year}</span>
-                ${w.journal ? `<span>|</span><span class="italic">${w.journal}</span>` : ""}
-              </div>
-            </div>
-          </div>
-        </a>
-      `,
-        )
-        .join("");
+            </a>`,
+        ).join("");
 
       const renderedDois = new Set();
 
