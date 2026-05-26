@@ -107,7 +107,11 @@ The covariance matrix of any unbiased estimator satisfies $\operatorname{Cov}(\h
 We assume a Gaussian point-spread function $\qty(2\pi\sigma^{2})^{-1/4}e^{-x^{2}/(4\sigma^{2})}$ with characteristic width $\sigma$.
 Considering the set of sampling time instances $T$, the Fisher information matrices for $\theta$ satisfy
 $$
-  \mathcal{F}_{jk} \approx \frac{\nu}{\sigma^2}\frac{1}{1+2b/\nu} \sum_{t\in T} \pdv{s(t,\theta)}{\theta_j} \pdv{s(t, \theta)}{\theta_k} \qand \lim_{s\to 0}F^\text{(PM)} = \mathcal{F},
+  \mathcal{F}_{jk} \approx \frac{\nu}{\sigma^2}\frac{1}{1+2b/\nu} \sum_{t\in T} \pdv{s(t,\theta)}{\theta_j} \pdv{s(t, \theta)}{\theta_k}
+$$
+and
+$$
+  \lim_{s\to 0}F^\text{(PM)} = \mathcal{F},
 $$
 where $\nu$ denotes the average photon number per sample, $b$ is the expected number of noise photons in each detector, and $F^\text{(PM)}$ represents the classical Fisher information matrix of PM-SPADE.
 
