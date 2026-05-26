@@ -1,0 +1,135 @@
+---
+// @ts-nocheck
+const {
+  data = [],
+  layout = {},
+  config = {},
+  class: className = "",
+} = Astro.props;
+
+const uniqueId = "chart-" + Math.random().toString(36).substr(2, 9);
+const chartPayload = { data, layout, config };
+---
+
+<div
+  id={uniqueId}
+  class={`custom-plotly-chart ${className}`}
+  data-chart-payload={JSON.stringify(chartPayload)}
+>
+</div>
+
+<script>
+  // @ts-nocheck
+  import Plotly from "plotly.js-dist-min";
+
+  function deepMerge(target, source) {
+    for (const key in source) {
+      if (
+        source[key] &&
+        typeof source[key] === "object" &&
+        !Array.isArray(source[key])
+      ) {
+        if (!target[key]) target[key] = {};
+        deepMerge(target[key], source[key]);
+      } else {
+        target[key] = source[key];
+      }
+    }
+    return target;
+  }
+
+  function renderCharts() {
+    const containers = document.querySelectorAll(
+      ".custom-plotly-chart:not(.is-ready)",
+    );
+
+    containers.forEach((container) => {
+      try {
+        const rawPayload = container.getAttribute("data-chart-payload");
+        if (!rawPayload) return;
+
+        const { data, layout, config } = JSON.parse(rawPayload);
+
+        const defaultLayout = {
+          colorway: [
+            "#0072bd",
+            "#d95319",
+            "#edb120",
+            "#7e2f8e",
+            "#77ac30",
+            "#4dbeee",
+            "#a2142f",
+          ],
+          title: {
+            text: "",
+            xref: "paper",
+            x: 0,
+            xanchor: "left",
+            y: 0.83,
+            yanchor: "top",
+          },
+          xaxis: {
+            title: { text: "" },
+            showgrid: false,
+            showline: true,
+            mirror: "ticks",
+            linecolor: "#000",
+            linewidth: 1,
+            ticks: "inside",
+            tickcolor: "#000",
+            ticklen: 5,
+            tickwidth: 1,
+            zeroline: false,
+          },
+          yaxis: {
+            title: { text: "" },
+            showgrid: false,
+            showline: true,
+            mirror: "ticks",
+            linecolor: "#000",
+            linewidth: 1,
+            ticks: "inside",
+            tickcolor: "#000",
+            ticklen: 5,
+            tickwidth: 1,
+            zeroline: false,
+          },
+          plot_bgcolor: "#fff",
+          paper_bgcolor: "#fff",
+          legend: {
+            showlegend: true,
+          },
+        };
+
+        const formattedData = data.map((trace) => {
+          const updatedTrace = { ...trace };
+          if (updatedTrace.mode?.includes("lines") || !updatedTrace.mode) {
+            updatedTrace.line = Object.assign({ width: 2 }, updatedTrace.line);
+          }
+          if (updatedTrace.mode?.includes("markers")) {
+            updatedTrace.marker = Object.assign(
+              { size: 6 },
+              updatedTrace.marker,
+            );
+          }
+          return updatedTrace;
+        });
+
+        const finalLayout = {};
+        deepMerge(finalLayout, defaultLayout);
+        deepMerge(finalLayout, layout);
+
+        const defaultConfig = { responsive: true, displayModeBar: false };
+        const finalConfig = Object.assign({}, defaultConfig, config);
+
+        Plotly.newPlot(container, formattedData, finalLayout, finalConfig);
+        container.classList.add("is-ready");
+      } catch (e) {
+        console.error("Plotly error:", e);
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", renderCharts);
+  document.addEventListener("astro:page-load", renderCharts);
+</script>
