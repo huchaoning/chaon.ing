@@ -17,6 +17,7 @@ import fig2 from "./freqest.assets/metrology.webp";
 import fig3 from "./freqest.assets/DIvsSPADE.webp";
 import fig4 from "./freqest.assets/freqest_fig1.webp";
 import fig5 from "./freqest.assets/freqest_fig2.webp";
+import fig6 from "./freqest.assets/freqest_fig4.webp";
 
 
 ## Introduction
@@ -54,7 +55,7 @@ Hence, we can think of classical Fisher information as being defined directly by
 Once the quantum state is fixed and your measurement scheme is chosen, the classical Fisher information is determined, which can then be extracted by choosing an appropriate estimator. 
 
 <figure>
-  <img src={fig2.src}/>
+  <img src={fig2.src} />
   <figcaption>
     Quantum detection and estimation.
   </figcaption>
@@ -68,7 +69,7 @@ By demonstrating that the quantum Fisher information remains constant even as th
 This insight led them to propose spatial-mode demultiplexing (SPADE) as a measurement scheme.
 
 From the perspective of quantum measurement, direct imaging projects the incoming light field onto a coordinate basis, i.e., spatial positions.
-In contrast, SPADE expands the field into a set of orthogonal spatial modes $\qty{\ket{\phi_q}}$, estimating the unknown parameters by measuring the photon detection probabilities across these modes.
+In contrast, SPADE expands the field into a set of orthogonal spatial modes $\qty{\ket{\phi_q}}$ (e.g., [Hermite-Gaussian modes](https://en.wikipedia.org/wiki/Gaussian_beam#Hermite%E2%80%93Gaussian_modes)), estimating the unknown parameters by measuring the photon detection probabilities across these modes.
 
 <figure>
   <img src={fig3.src} />
@@ -125,7 +126,17 @@ A continuous-wave (CW) Gaussian beam illuminates a digital micromirror device (D
   </figcaption>
 </figure>
 
+The figure below presents the experimental results alongside our theoretical predictions. 
+It shows the means and rescaled variances (which quantifies the estimation error) of the frequency estimates obtained through PM-SPADE and direct imaging as functions of the relative intensity of excess noise, which is uniform across all detectors.
+Here, CRB and QCRB denote the classical and quantum Cram&eacute;r-Rao bounds, respectively.
 
+<figure>
+  <img src={fig6.src} />
+
+  <figcaption>
+    Mean and rescaled variance of PM-SPADE and direct imaging versus the noise induced by background light.
+  </figcaption>
+</figure>
 
 ---
 
